@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Menu HorizontalAlignment="Center" Height="424" VerticalAlignment="Top" Width="800">
+            <MenuItem Header="Адреса" x:Name="Address" Click="Address_Click"/>
+            <MenuItem x:Name="City" Header="Города" Click="City_Click"/>
+            <MenuItem x:Name="Country" Header="Страны" Click="Country_Click"/>
+            <MenuItem x:Name="Region" Header="Регионы" Click="Region_Click"/>
+        </Menu>
 
     </Grid>
 </Window>

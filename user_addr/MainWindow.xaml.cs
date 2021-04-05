@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using user_addr.View;
 
 namespace user_addr
 {
@@ -23,6 +24,35 @@ namespace user_addr
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Address_Click(object sender, RoutedEventArgs e)
+        {
+            WindowAddress wAddress = new WindowAddress();
+            wAddress.Show();
+        }
+
+        private void City_Click(object sender, RoutedEventArgs e)
+        {
+            WindowCity wCity = new WindowCity();
+            wCity.Show();
+        }
+
+        private void Country_Click(object sender, RoutedEventArgs e)
+        {
+            WindowCountry wCountry = new WindowCountry();
+            wCountry.Show();
+        }
+
+        private void Region_Click(object sender, RoutedEventArgs e)
+        {
+            WindowRegion wRegion = new WindowRegion();
+            wRegion.Show();
         }
     }
 }
