@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using user_addr.Model;
 using user_addr.ViewModel;
 
 namespace user_addr.View
@@ -26,6 +27,37 @@ namespace user_addr.View
 
             CountryViewModel vmCountry = new CountryViewModel();
             lvCountry.ItemsSource = vmCountry.ListCountry;
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            CountryViewModel vmCountry = new CountryViewModel();
+            WindowNewCountry wnCountry = new WindowNewCountry
+            {
+                Title = "Новая страна",
+                Owner = this
+            };
+            int maxIdCountry = vmCountry.MaxId() + 1;
+            Country country = new Country
+            {
+                Id = maxIdCountry
+            };
+            wnCountry.DataContext = country;
+            if (wnCountry.ShowDialog() == true)
+            {
+                vmCountry.ListCountry.Add(country);
+                lvCountry.ItemsSource = vmCountry.ListCountry;
+            }
+        }
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

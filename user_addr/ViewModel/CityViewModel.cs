@@ -8,7 +8,7 @@ using user_addr.Model;
 
 namespace user_addr.ViewModel
 {
-    class CityViewModel
+    public class CityViewModel
     {
         public ObservableCollection<City> ListCity { get; set; } = new ObservableCollection<City>();
 

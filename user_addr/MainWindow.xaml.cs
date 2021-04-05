@@ -21,6 +21,7 @@ namespace user_addr
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static int IdCountry { get; set; }
         public MainWindow()
         {
             InitializeComponent();
