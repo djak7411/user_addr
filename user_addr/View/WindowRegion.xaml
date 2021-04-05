@@ -7,6 +7,17 @@
         mc:Ignorable="d"
         Title="WindowRegion" Height="450" Width="800">
     <Grid>
-        
+        <ListView x:Name="lvRegion">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="Страна" DisplayMemberBinding="{Binding CountryId}"/>
+                        <GridViewColumn Header="Название" Width="150" DisplayMemberBinding="{Binding NameRegion}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 </Window>

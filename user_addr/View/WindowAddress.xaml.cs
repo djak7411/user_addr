@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using user_addr.ViewModel;
 
 namespace user_addr.View
 {
@@ -22,6 +23,9 @@ namespace user_addr.View
         public WindowAddress()
         {
             InitializeComponent();
+
+            AddressViewModel vmAddress = new AddressViewModel();
+            lvAddress.ItemsSource = vmAddress.ListAddress;
         }
     }
 }

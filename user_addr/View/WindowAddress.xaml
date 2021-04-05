@@ -7,6 +7,20 @@
         mc:Ignorable="d"
         Title="WindowAddress" Height="450" Width="800">
     <Grid>
-        
+        <ListView x:Name="lvAddress">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="Клиент" DisplayMemberBinding="{Binding Person}"/>
+                        <GridViewColumn Header="Город" DisplayMemberBinding="{Binding CityId}"/>
+                        <GridViewColumn Header="Улица" DisplayMemberBinding="{Binding Street}"/>
+                        <GridViewColumn Header="Строение" Width="100" DisplayMemberBinding="{Binding Building}"/>
+                        <GridViewColumn Header="Офис" DisplayMemberBinding="{Binding Office}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 </Window>
