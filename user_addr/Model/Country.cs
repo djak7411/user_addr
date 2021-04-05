@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace user_addr.Model
 {
-    class Country
+    public class Country
     {
         public int Id { get; set; }
         public string CountryFull { get; set; }

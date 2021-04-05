@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace user_addr.Model
 {
-    public class Region
+    public class RegionDPO
     {
         public int Id { get; set; }
-        public int CountryId { get; set; }
+        public string Country { get; set; }
         public string NameRegion { get; set; }
 
-        public Region() { }
+        public RegionDPO() { }
 
-        public Region(int id, int countryId, string nameRegion)
+        public RegionDPO(int id, string country, string nameRegion)
         {
             this.Id = id;
-            this.CountryId = countryId;
+            this.Country = country;
             this.NameRegion = nameRegion;
         }
 
