@@ -23,11 +23,12 @@ namespace user_addr.View
     /// </summary>
     public partial class WindowCity : Window
     {
+        private CityViewModel vmCity = new CityViewModel();
+        private ObservableCollection<CityDPO> citiesDPO = new ObservableCollection<CityDPO>();
         public WindowCity()
         {
             InitializeComponent();
 
-            CityViewModel vmCity = new CityViewModel();
             RegionViewModel vmRegion = new RegionViewModel();
             List<Region> regions = new List<Region>();
             foreach (Region r in vmRegion.ListRegion)
@@ -35,20 +36,46 @@ namespace user_addr.View
                 regions.Add(r);
             }
 
-            ObservableCollection<CityDPO> cities = new ObservableCollection<CityDPO>();
             FindRegion finder;
             foreach (var c in vmCity.ListCity)
             {
                 finder = new FindRegion(c.RegionId);
                 Region reg = regions.Find(new Predicate<Region>(finder.RegionPredicate));
-                cities.Add(new CityDPO
+                citiesDPO.Add(new CityDPO
                 {
                     Id = c.Id,
                     NameCity= c.NameCity,
                     Region = reg.NameRegion,
                 });
             }
-            lvCity.ItemsSource = cities;
+            lvCity.ItemsSource = citiesDPO;
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            CityDPO city = (CityDPO)lvCity.SelectedItem;
+            if (city != null)
+            {
+                MessageBoxResult result = MessageBox.Show($"Удалить данные города {city.NameCity}?", "Предупреждение", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.OK)
+                {
+                    citiesDPO.Remove(city);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо выбрать страну для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

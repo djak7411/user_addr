@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="WindowCity" Height="450" Width="800">
     <Grid>
-        <ListView x:Name="lvCity">
+        <ListView x:Name="lvCity" Margin="0,38,0,0">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
@@ -18,6 +18,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
+        <Button Content="Добавить" x:Name="btnAdd" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Click="btnAdd_Click"/>
+        <Button Content="Редактировать" x:Name="btnEdit" HorizontalAlignment="Left" Margin="89,13,0,0" VerticalAlignment="Top" Click="btnEdit_Click"/>
+        <Button Content="Удалить" x:Name="btnDelete" HorizontalAlignment="Left" Margin="200,13,0,0" VerticalAlignment="Top" Click="btnDelete_Click"/>
     </Grid>
 </Window>

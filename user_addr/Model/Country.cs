@@ -20,5 +20,10 @@ namespace user_addr.Model
             this.CountryFull = countryFull;
             this.CountryShort = countryShort;
         }
+
+        public Country ShallowCopy()
+        {
+            return (Country)this.MemberwiseClone();
+        }
     }
 }

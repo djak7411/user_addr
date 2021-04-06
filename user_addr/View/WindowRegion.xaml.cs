@@ -23,11 +23,13 @@ namespace user_addr.View
     /// </summary>
     public partial class WindowRegion : Window
     {
+        private RegionViewModel vmRegion = new RegionViewModel();
+        private ObservableCollection<RegionDPO> regionsDPO = new ObservableCollection<RegionDPO>();
         public WindowRegion()
         {
             InitializeComponent();
 
-            RegionViewModel vmRegion = new RegionViewModel();
+            
             CountryViewModel vmCountry = new CountryViewModel();
             List<Country> countries = new List<Country>();
             foreach (Country c in vmCountry.ListCountry)
@@ -35,21 +37,47 @@ namespace user_addr.View
                 countries.Add(c);
             }
 
-            ObservableCollection<RegionDPO> regions = new ObservableCollection<RegionDPO>();
+            
             FindCountry finder;
             foreach (var r in vmRegion.ListRegion)
             {
                 finder = new FindCountry(r.CountryId);
                 Country cnt = countries.Find(new Predicate<Country>(finder.CountryPredicate));
-                regions.Add(new RegionDPO
+                regionsDPO.Add(new RegionDPO
                 {
                     Id = r.Id,
                     Country = cnt.CountryShort,
                     NameRegion = r.NameRegion,
                 });
             }
-            lvRegion.ItemsSource = regions;
+            lvRegion.ItemsSource = regionsDPO;
         }
 
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            RegionDPO region = (RegionDPO)lvRegion.SelectedItem;
+            if (region != null)
+            {
+                MessageBoxResult result = MessageBox.Show($"Удалить данные региона {region.NameRegion}?", "Предупреждение", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.OK)
+                {
+                    regionsDPO.Remove(region);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо выбрать страну для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

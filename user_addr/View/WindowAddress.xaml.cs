@@ -23,11 +23,12 @@ namespace user_addr.View
     /// </summary>
     public partial class WindowAddress : Window
     {
+        private AddressViewModel vmAddress = new AddressViewModel();
+        private ObservableCollection<AddressDPO> addressesDPO = new ObservableCollection<AddressDPO>();
         public WindowAddress()
         {
             InitializeComponent();
 
-            AddressViewModel vmAddress = new AddressViewModel();
             CityViewModel vmCity = new CityViewModel();
             List<City> cities = new List<City>();
             foreach(City c in vmCity.ListCity)
@@ -35,13 +36,12 @@ namespace user_addr.View
                 cities.Add(c);
             }
 
-            ObservableCollection<AddressDPO> addresses = new ObservableCollection<AddressDPO>();
             FindCity finder;
             foreach(var a in vmAddress.ListAddress)
             {
                 finder = new FindCity(a.CityId);
                 City cit = cities.Find(new Predicate<City>(finder.CityPredicate));
-                addresses.Add(new AddressDPO
+                addressesDPO.Add(new AddressDPO
                 {
                     Id = a.Id,
                     City = cit.NameCity,
@@ -51,8 +51,34 @@ namespace user_addr.View
                     Office = a.Office
                 });
             }
-            lvAddress.ItemsSource = addresses;
+            lvAddress.ItemsSource = addressesDPO;
         }
 
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            AddressDPO address = (AddressDPO)lvAddress.SelectedItem;
+            if (address != null)
+            {
+                MessageBoxResult result = MessageBox.Show($"Удалить данные адреса {address.Person}?", "Предупреждение", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.OK)
+                {
+                    addressesDPO.Remove(address);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо выбрать страну для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

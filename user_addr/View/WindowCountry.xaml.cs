@@ -21,17 +21,15 @@ namespace user_addr.View
     /// </summary>
     public partial class WindowCountry : Window
     {
+        private CountryViewModel vmCountry = new CountryViewModel();
         public WindowCountry()
         {
             InitializeComponent();
-
-            CountryViewModel vmCountry = new CountryViewModel();
             lvCountry.ItemsSource = vmCountry.ListCountry;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            CountryViewModel vmCountry = new CountryViewModel();
             WindowNewCountry wnCountry = new WindowNewCountry
             {
                 Title = "Новая страна",
@@ -52,12 +50,45 @@ namespace user_addr.View
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowNewCountry wnCountry = new WindowNewCountry
+            {
+                Title = "Новая страна",
+                Owner = this
+            };
+            Country country = lvCountry.SelectedItem as Country;
+            if (country != null)
+            {
+                Country tempCountry = country.ShallowCopy();
+                wnCountry.DataContext = tempCountry;
+                if(wnCountry.ShowDialog() == true)
+                {
+                    country.CountryFull = tempCountry.CountryFull;
+                    country.CountryShort = tempCountry.CountryShort;
+                    lvCountry.ItemsSource = null;
+                    lvCountry.ItemsSource = vmCountry.ListCountry;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо выбрать страну для редактирования", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            Country country = (Country)lvCountry.SelectedItem;
+            if(country != null)
+            {
+                MessageBoxResult result = MessageBox.Show($"Удалить данные страны {country.CountryShort}?", "Предупреждение", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                if(result == MessageBoxResult.OK)
+                {
+                    vmCountry.ListCountry.Remove(country);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо выбрать страну для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }
