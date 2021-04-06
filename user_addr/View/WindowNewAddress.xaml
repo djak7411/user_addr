@@ -18,8 +18,8 @@
         <TextBlock HorizontalAlignment="Left" Height="40" Margin="31,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="145"><Run Language="ru-ru" Text="Улица"/><LineBreak/><Run Language="ru-ru"/><LineBreak/><Run/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Height="40" Margin="32,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"><Run Language="ru-ru" Text="Строение"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Height="40" Margin="31,292,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="145"><Run Language="ru-ru" Text="Офис"/></TextBlock>
-        <TextBox x:Name="{Binding Street}" HorizontalAlignment="Left" Height="24" Margin="200,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="287"/>
-        <TextBox x:Name="{Binding Building}" HorizontalAlignment="Left" Height="27" Margin="200,252,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289"/>
-        <TextBox x:Name="{Binding Office}" HorizontalAlignment="Left" Height="30" Margin="199,292,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290"/>
+        <TextBox Text="{Binding Street}" HorizontalAlignment="Left" Height="24" Margin="200,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="287"/>
+        <TextBox Text="{Binding Building}" HorizontalAlignment="Left" Height="27" Margin="200,252,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289"/>
+        <TextBox Text="{Binding Office}" HorizontalAlignment="Left" Height="30" Margin="199,292,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290"/>
     </Grid>
 </Window>
