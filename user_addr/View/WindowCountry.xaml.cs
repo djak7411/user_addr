@@ -21,7 +21,7 @@ namespace user_addr.View
     /// </summary>
     public partial class WindowCountry : Window
     {
-        private CountryViewModel vmCountry = new CountryViewModel();
+        private static CountryViewModel vmCountry = new CountryViewModel();
         public WindowCountry()
         {
             InitializeComponent();

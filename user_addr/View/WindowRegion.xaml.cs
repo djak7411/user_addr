@@ -23,34 +23,24 @@ namespace user_addr.View
     /// </summary>
     public partial class WindowRegion : Window
     {
-        private RegionViewModel vmRegion = new RegionViewModel();
-        private ObservableCollection<RegionDPO> regionsDPO = new ObservableCollection<RegionDPO>();
+        private static RegionViewModel vmRegion = new RegionViewModel();
+        private static ObservableCollection<RegionDPO> regionsDPO = new ObservableCollection<RegionDPO>();
+        private static CountryViewModel vmCountry = new CountryViewModel();
+        private static List<Country> countries = vmCountry.ListCountry.ToList();
         public WindowRegion()
         {
             InitializeComponent();
-
-            
-            CountryViewModel vmCountry = new CountryViewModel();
-            List<Country> countries = new List<Country>();
-            foreach (Country c in vmCountry.ListCountry)
+            if (regionsDPO.Count == 0)
             {
-                countries.Add(c);
-            }
-
-            
-            FindCountry finder;
-            foreach (var r in vmRegion.ListRegion)
-            {
-                finder = new FindCountry(r.CountryId);
-                Country cnt = countries.Find(new Predicate<Country>(finder.CountryPredicate));
-                regionsDPO.Add(new RegionDPO
+                foreach (var region in vmRegion.ListRegion)
                 {
-                    Id = r.Id,
-                    Country = cnt.CountryShort,
-                    NameRegion = r.NameRegion,
-                });
+                    RegionDPO r = new RegionDPO();
+                    r = r.CopyFromRegion(region);
+                    regionsDPO.Add(r);
+                }
             }
             lvRegion.ItemsSource = regionsDPO;
+            
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -66,18 +56,73 @@ namespace user_addr.View
             }
             else
             {
-                MessageBox.Show("Необходимо выбрать страну для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Необходимо выбрать регион для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            WindowNewRegion wnRegion = new WindowNewRegion
+            {
+                Title = "Редактирование региона",
+                Owner = this
+            };
 
+            RegionDPO regDPO = (RegionDPO)lvRegion.SelectedValue;
+            RegionDPO tempRegDPO;
+            if(regDPO != null)
+            {
+                tempRegDPO = regDPO.ShallowCopy();
+                wnRegion.DataContext = tempRegDPO;
+                wnRegion.CbCountry.ItemsSource = countries;
+                wnRegion.CbCountry.Text = tempRegDPO.Country;
+                if(wnRegion.ShowDialog() == true)
+                {
+                    Country c = (Country)wnRegion.CbCountry.SelectedValue;
+                    regDPO.Country = c.CountryShort;
+                    regDPO.NameRegion = tempRegDPO.NameRegion;
+
+                    lvRegion.ItemsSource = null;
+                    lvRegion.ItemsSource = regionsDPO;
+
+                    FindRegion finder = new FindRegion(regDPO.Id);
+                    List<Region> listRegion = vmRegion.ListRegion.ToList();
+                    Region r = listRegion.Find(new Predicate<Region>(finder.RegionPredicate));
+                    r = r.CopyFromRegionDPO(regDPO);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо выбрать регион для редактирования", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            WindowNewRegion wnRegion = new WindowNewRegion
+            {
+                Title = "Новый регион",
+                Owner = this
+            };
+            int maxIdRegion = vmRegion.MaxId() + 1;
 
+            RegionDPO region = new RegionDPO
+            {
+                Id = maxIdRegion
+            };
+            wnRegion.DataContext = region;
+            wnRegion.CbCountry.ItemsSource = countries;
+
+            if (wnRegion.ShowDialog() == true)
+            {
+                Country c = (Country)wnRegion.CbCountry.SelectedValue;
+                region.Country = c.CountryShort;
+                regionsDPO.Add(region);
+
+                Region r = new Region();
+                r = r.CopyFromRegionDPO(region);
+                vmRegion.ListRegion.Add(r);
+            }
         }
     }
 }

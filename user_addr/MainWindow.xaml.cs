@@ -22,6 +22,9 @@ namespace user_addr
     public partial class MainWindow : Window
     {
         public static int IdCountry { get; set; }
+        public static int IdRegion { get; set; }
+        public static int IdCity { get; set; }
+        public static int IdAddress { get; set; }
         public MainWindow()
         {
             InitializeComponent();

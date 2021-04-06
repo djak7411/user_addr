@@ -23,30 +23,21 @@ namespace user_addr.View
     /// </summary>
     public partial class WindowCity : Window
     {
-        private CityViewModel vmCity = new CityViewModel();
-        private ObservableCollection<CityDPO> citiesDPO = new ObservableCollection<CityDPO>();
+        private static CityViewModel vmCity = new CityViewModel();
+        private static ObservableCollection<CityDPO> citiesDPO = new ObservableCollection<CityDPO>();
+        private static RegionViewModel vmRegion = new RegionViewModel();
+        private static List<Region> regions = vmRegion.ListRegion.ToList();
         public WindowCity()
         {
             InitializeComponent();
-
-            RegionViewModel vmRegion = new RegionViewModel();
-            List<Region> regions = new List<Region>();
-            foreach (Region r in vmRegion.ListRegion)
+            if (citiesDPO.Count == 0)
             {
-                regions.Add(r);
-            }
-
-            FindRegion finder;
-            foreach (var c in vmCity.ListCity)
-            {
-                finder = new FindRegion(c.RegionId);
-                Region reg = regions.Find(new Predicate<Region>(finder.RegionPredicate));
-                citiesDPO.Add(new CityDPO
+                foreach (var city in vmCity.ListCity)
                 {
-                    Id = c.Id,
-                    NameCity= c.NameCity,
-                    Region = reg.NameRegion,
-                });
+                    CityDPO c = new CityDPO();
+                    c = c.CopyFromCity(city);
+                    citiesDPO.Add(c);
+                }
             }
             lvCity.ItemsSource = citiesDPO;
         }
@@ -64,18 +55,73 @@ namespace user_addr.View
             }
             else
             {
-                MessageBox.Show("Необходимо выбрать страну для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Необходимо выбрать город для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            WindowNewCity wnCity = new WindowNewCity
+            {
+                Title = "Редактирование города",
+                Owner = this
+            };
 
+            CityDPO citDPO = (CityDPO)lvCity.SelectedValue;
+            CityDPO tempCitDPO;
+            if (citDPO != null)
+            {
+                tempCitDPO = citDPO.ShallowCopy();
+                wnCity.DataContext = tempCitDPO;
+                wnCity.CbRegion.ItemsSource = regions;
+                wnCity.CbRegion.Text = tempCitDPO.Region;
+                if (wnCity.ShowDialog() == true)
+                {
+                    Region r = (Region)wnCity.CbRegion.SelectedValue;
+                    citDPO.Region = r.NameRegion;
+                    citDPO.NameCity = tempCitDPO.NameCity;
+
+                    lvCity.ItemsSource = null;
+                    lvCity.ItemsSource = citiesDPO;
+
+                    FindCity finder = new FindCity(citDPO.Id);
+                    List<City> listCity = vmCity.ListCity.ToList();
+                    City c = listCity.Find(new Predicate<City>(finder.CityPredicate));
+                    c = c.CopyFromCityDPO(citDPO);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо выбрать город для редактирования", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            WindowNewCity wnCity = new WindowNewCity
+            {
+                Title = "Новый город",
+                Owner = this
+            };
+            int maxIdCity = vmCity.MaxId() + 1;
 
+            CityDPO city = new CityDPO
+            {
+                Id = maxIdCity
+            };
+            wnCity.DataContext = city;
+            wnCity.CbRegion.ItemsSource = regions;
+
+            if (wnCity.ShowDialog() == true)
+            {
+                Region r = (Region)wnCity.CbRegion.SelectedValue;
+                city.Region = r.NameRegion;
+                citiesDPO.Add(city);
+
+                City c = new City();
+                c = c.CopyFromCityDPO(city);
+                vmCity.ListCity.Add(c);
+            }
         }
     }
 }

@@ -1,0 +1,25 @@
+﻿<Window x:Class="user_addr.View.WindowNewAddress"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:user_addr.View"
+        mc:Ignorable="d"
+        Title="WindowNewAddress" Height="450" Width="800">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Height="40" Margin="31,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112"><Run Language="ru-ru" Text="Город"/><LineBreak/><Run Language="ru-ru"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="40" Margin="31,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="145"><Run Language="ru-ru" Text="Клиент"/><LineBreak/><Run Language="ru-ru"/><LineBreak/><Run/></TextBlock>
+        <TextBox Text="{Binding Person}" x:Name="TbPerson" HorizontalAlignment="Left" Height="32" Margin="199,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289"/>
+        <TextBlock HorizontalAlignment="Left" Height="37" Margin="87,36,0,0" Text="ID" TextWrapping="Wrap" VerticalAlignment="Top" Width="34"/>
+        <TextBox Text="{Binding Id}" x:Name="TbId" HorizontalAlignment="Left" Height="19" Margin="199,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289" TextAlignment="Center" IsEnabled="False"/>
+        <Button x:Name="BtSave" Content="Сохранить" HorizontalAlignment="Left" Margin="31,361,0,0" VerticalAlignment="Top" Height="63" Width="169" Click="BtSave_Click" IsDefault="True"/>
+        <Button x:Name="BtCancel" Content="Отменить" HorizontalAlignment="Left" Margin="612,355,0,0" VerticalAlignment="Top" Height="66" Width="151" Click="BtCancel_Click" IsCancel="True"/>
+        <ComboBox x:Name="CbCity" DisplayMemberPath="NameCity" HorizontalAlignment="Left" Height="20" Margin="199,109,0,0" VerticalAlignment="Top" Width="288"/>
+        <TextBlock HorizontalAlignment="Left" Height="40" Margin="31,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="145"><Run Language="ru-ru" Text="Улица"/><LineBreak/><Run Language="ru-ru"/><LineBreak/><Run/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="40" Margin="32,253,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144"><Run Language="ru-ru" Text="Строение"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Height="40" Margin="31,292,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="145"><Run Language="ru-ru" Text="Офис"/></TextBlock>
+        <TextBox x:Name="{Binding Street}" HorizontalAlignment="Left" Height="24" Margin="200,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="287"/>
+        <TextBox x:Name="{Binding Building}" HorizontalAlignment="Left" Height="27" Margin="200,252,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="289"/>
+        <TextBox x:Name="{Binding Office}" HorizontalAlignment="Left" Height="30" Margin="199,292,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290"/>
+    </Grid>
+</Window>

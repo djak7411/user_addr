@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using user_addr.ViewModel;
 
 namespace user_addr.Model
 {
-    class AddressDPO
+    public class AddressDPO
     {
         public int Id { get; set; }
         public string City { get; set; }
@@ -24,6 +25,36 @@ namespace user_addr.Model
             this.Street = street;
             this.Building = building;
             this.Office = office;
+        }
+
+        public AddressDPO ShallowCopy()
+        {
+            return (AddressDPO)this.MemberwiseClone();
+        }
+
+        public AddressDPO CopyFromAddress(Address address)
+        {
+            AddressDPO adrDPO = new AddressDPO();
+            CityViewModel vmCity = new CityViewModel();
+            string city = string.Empty;
+            foreach (var c in vmCity.ListCity)
+            {
+                if (c.Id == address.CityId)
+                {
+                    city = c.NameCity;
+                    break;
+                }
+            }
+            if (city != string.Empty)
+            {
+                adrDPO.Id = address.Id;
+                adrDPO.City = city;
+                adrDPO.Person = address.Person;
+                adrDPO.Street = address.Street;
+                adrDPO.Building = address.Building;
+                adrDPO.Office = address.Office;
+            }
+            return adrDPO;
         }
     }
 }

@@ -32,5 +32,19 @@ namespace user_addr.ViewModel
             );
 
         }
+
+        public int MaxId()
+        {
+            int max = 0;
+            foreach (var r in this.ListCity)
+            {
+                if (max < r.Id)
+                {
+                    max = r.Id;
+                }
+            }
+            return max;
+        }
+
     }
 }

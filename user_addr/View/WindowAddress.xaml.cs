@@ -23,33 +23,21 @@ namespace user_addr.View
     /// </summary>
     public partial class WindowAddress : Window
     {
-        private AddressViewModel vmAddress = new AddressViewModel();
-        private ObservableCollection<AddressDPO> addressesDPO = new ObservableCollection<AddressDPO>();
+        private static AddressViewModel vmAddress = new AddressViewModel();
+        private static ObservableCollection<AddressDPO> addressesDPO = new ObservableCollection<AddressDPO>();
+        private static CityViewModel vmCity = new CityViewModel();
+        private static List<City> cities = vmCity.ListCity.ToList();
         public WindowAddress()
         {
             InitializeComponent();
-
-            CityViewModel vmCity = new CityViewModel();
-            List<City> cities = new List<City>();
-            foreach(City c in vmCity.ListCity)
+            if (addressesDPO.Count == 0)
             {
-                cities.Add(c);
-            }
-
-            FindCity finder;
-            foreach(var a in vmAddress.ListAddress)
-            {
-                finder = new FindCity(a.CityId);
-                City cit = cities.Find(new Predicate<City>(finder.CityPredicate));
-                addressesDPO.Add(new AddressDPO
+                foreach (var adr in vmAddress.ListAddress)
                 {
-                    Id = a.Id,
-                    City = cit.NameCity,
-                    Person = a.Person,
-                    Street = a.Street,
-                    Building = a.Building,
-                    Office = a.Office
-                });
+                    AddressDPO a = new AddressDPO();
+                    a = a.CopyFromAddress(adr);
+                    addressesDPO.Add(a);
+                }
             }
             lvAddress.ItemsSource = addressesDPO;
         }
@@ -67,18 +55,76 @@ namespace user_addr.View
             }
             else
             {
-                MessageBox.Show("Необходимо выбрать страну для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Необходимо выбрать адрес для удаления", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
+            WindowNewAddress wnAddress = new WindowNewAddress
+            {
+                Title = "Редактирование адреса",
+                Owner = this
+            };
 
+            AddressDPO adrDPO = (AddressDPO)lvAddress.SelectedValue;
+            AddressDPO tempAdrDPO;
+            if (adrDPO != null)
+            {
+                tempAdrDPO = adrDPO.ShallowCopy();
+                wnAddress.DataContext = tempAdrDPO;
+                wnAddress.CbCity.ItemsSource = cities;
+                wnAddress.CbCity.Text = tempAdrDPO.City;
+                if (wnAddress.ShowDialog() == true)
+                {
+                    City c = (City)wnAddress.CbCity.SelectedValue;
+                    adrDPO.City = c.NameCity;
+                    adrDPO.Person = tempAdrDPO.Person;
+                    adrDPO.Street = tempAdrDPO.Street;
+                    adrDPO.Building = tempAdrDPO.Building;
+                    adrDPO.Office = tempAdrDPO.Office;
+
+                    lvAddress.ItemsSource = null;
+                    lvAddress.ItemsSource = addressesDPO;
+
+                    FindAddress finder = new FindAddress(adrDPO.Id);
+                    List<Address> listAddress = vmAddress.ListAddress.ToList();
+                    Address a = listAddress.Find(new Predicate<Address>(finder.AddressPredicate));
+                    a = a.CopyFromAddressDPO(adrDPO);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Необходимо выбрать регион для редактирования", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            WindowNewAddress wnAddress = new WindowNewAddress
+            {
+                Title = "Новый адрес",
+                Owner = this
+            };
+            int maxIdAddress = vmAddress.MaxId() + 1;
 
+            AddressDPO address = new AddressDPO
+            {
+                Id = maxIdAddress
+            };
+            wnAddress.DataContext = address;
+            wnAddress.CbCity.ItemsSource = cities;
+
+            if (wnAddress.ShowDialog() == true)
+            {
+                City c = (City)wnAddress.CbCity.SelectedValue;
+                address.City = c.NameCity;
+                addressesDPO.Add(address);
+
+                Address a = new Address();
+                a = a.CopyFromAddressDPO(address);
+                vmAddress.ListAddress.Add(a);
+            }
         }
     }
 }
